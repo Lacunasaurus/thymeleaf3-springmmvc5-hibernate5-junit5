@@ -1,0 +1,10 @@
+body {
+      background-color: #FEFEFE;
+      font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif ;
+      color: #242424;
+      font-size: medium;
+}
+li a {
+    text-decoration: none;
+    color: #2291a5;
+}

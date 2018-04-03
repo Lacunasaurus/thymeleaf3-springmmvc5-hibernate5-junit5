@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head data-th-replace="templates/head :: head(title=#{authentication.page.signup.title})"></head>
+    <body>
+        <div data-th-include="templates/header :: header"></div>
+
+        <form action="sign-up.html" data-th-action="@{/sign-up}" method="post">
+            <label for="sign_up_email" data-th-text="#{authentication.signup.form.label.email}"></label>
+            <input type="email" id="sign_up_email" required="required" name="sign_up_email" /><br>
+            <label for="sign_up_login" data-th-text="#{authentication.signup.form.label.login}"></label>
+            <input type="text" id="sign_up_login" required="required" name="sign_up_login" /><br>
+            <label for="sign_up_password" data-th-text="#{authentication.signup.form.label.password}"></label>
+            <input type="password" id="sign_up_password" required="required" name="sign_up_password" /><br><br>
+            <input type="submit" data-th-value="#{authentication.signup.form.submit}">
+        </form>
+    </body>
+</html>

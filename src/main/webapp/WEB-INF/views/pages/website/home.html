@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Home Page</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
+    <head data-th-replace="templates/head :: head(title=#{website.page.home.title})"></head>
     <body>
-        <div>Here will be writen our content</div>
+        <div data-th-include="templates/header :: header"></div>
+        
+        <p data-th-text="#{website.page.home.welcome}"></p>
     </body>
 </html>

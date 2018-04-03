@@ -1,6 +1,10 @@
 package com.lacunasaurus.tutorial.web.configuration;
 
+import com.lacunasaurus.tutorial.web.controllers.admin.AdminUserAccountController;
+import com.lacunasaurus.tutorial.web.controllers.authentication.LoginController;
+import com.lacunasaurus.tutorial.web.controllers.authentication.LogoutController;
 import com.lacunasaurus.tutorial.web.controllers.website.HomeController;
+import com.lacunasaurus.tutorial.web.controllers.authentication.SignUpController;
 import com.lacunasaurus.tutorial.web.controllers.website.WebController;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +37,10 @@ public class ApplicationConfig {
 
         this.controllersByURL = new HashMap<>();
         this.controllersByURL.put("/", new HomeController());
+        this.controllersByURL.put("/sign-up", new SignUpController());
+        this.controllersByURL.put("/login", new LoginController());
+        this.controllersByURL.put("/logout", new LogoutController());
+        this.controllersByURL.put("/admin/user-accounts", new AdminUserAccountController());
     }
 
     public WebController resolveControllerForRequest(final HttpServletRequest request) {
