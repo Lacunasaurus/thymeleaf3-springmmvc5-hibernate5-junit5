@@ -4,13 +4,20 @@
     <body>
         <div data-th-include="templates/header :: header"></div>
 
-        <form action="sign-up.html" data-th-action="@{/sign-up}" method="post">
+        <form action="sign-up.html" data-th-action="@{#{authentication.link.signup.link}}" data-th-object="${signUpModel}" method="post">
+            
             <label for="sign_up_email" data-th-text="#{authentication.signup.form.label.email}"></label>
-            <input type="email" id="sign_up_email" required="required" name="sign_up_email" /><br>
+            <input type="text" id="sign_up_email" data-th-field="*{email}" name="email" /><br>
+            <div data-th-if="${#fields.hasErrors('email')}" class="warning" data-th-errors="*{email}"><br></div>
+            
             <label for="sign_up_login" data-th-text="#{authentication.signup.form.label.login}"></label>
-            <input type="text" id="sign_up_login" required="required" name="sign_up_login" /><br>
+            <input type="text" id="sign_up_login" data-th-field="*{pseudo}" name="pseudo" /><br>
+            <div data-th-if="${#fields.hasErrors('pseudo')}" class="warning" data-th-errors="*{pseudo}"><br></div>
+            
             <label for="sign_up_password" data-th-text="#{authentication.signup.form.label.password}"></label>
-            <input type="password" id="sign_up_password" required="required" name="sign_up_password" /><br><br>
+            <input type="password" id="sign_up_password" data-th-field="*{password}" name="password" /><br>
+            <div data-th-if="${#fields.hasErrors('password')}" class="warning" data-th-errors="*{password}"><br></div>
+            
             <input type="submit" data-th-value="#{authentication.signup.form.submit}">
         </form>
     </body>

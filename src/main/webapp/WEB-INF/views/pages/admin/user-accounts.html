@@ -13,9 +13,9 @@
                 <th data-th-text="#{admin.useraccount.label.password}"></th>
             </tr>
             <tr data-th-each="account : ${accountList}">
-                <td data-th-text="${account.value.email}"></td>
-                <td data-th-text="${account.value.pseudo}"></td>
-                <td data-th-text="${account.value.password}"></td>
+                <td data-th-text="${account.email}"></td>
+                <td data-th-text="${account.pseudo}"></td>
+                <td data-th-text="${account.password}"></td>
             </tr>
         </table>
     </body>

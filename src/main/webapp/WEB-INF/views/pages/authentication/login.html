@@ -3,12 +3,17 @@
     <head data-th-replace="templates/head :: head(title=#{authentication.page.login.title})"></head>
     <body>
         <div data-th-include="templates/header :: header"></div>
-        
-        <form action="login.html" data-th-action="@{/login}" method="post">
+
+        <form action="login.html" data-th-action="@{#{authentication.link.login.link}}" data-th-object="${loginModel}" method="post">
+
             <label for="login_pseudo" data-th-text="#{authentication.login.form.label.pseudo}"></label>
-            <input type="text" id="login_pseudo" required="required" name="login_pseudo" /><br>
+            <input type="text" id="login_pseudo" required="required" name="pseudo" /><br>
+            <div data-th-if="${#fields.hasErrors('pseudo')}" class="warning" data-th-errors="*{pseudo}"><br></div>
+            
             <label for="login_password" data-th-text="#{authentication.login.form.label.password}"></label>
-            <input type="password" id="login_password" required="required" name="login_password" /><br>
+            <input type="password" id="login_password" required="required" name="password" /><br>
+            <div data-th-if="${#fields.hasErrors('password')}" class="warning" data-th-errors="*{password}"><br></div>
+
             <input type="submit" value="Connexion">
         </form>
     </body>

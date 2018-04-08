@@ -1,70 +1,75 @@
 package com.lacunasaurus.tutorial.web.configuration;
 
-import com.lacunasaurus.tutorial.web.controllers.admin.AdminUserAccountController;
-import com.lacunasaurus.tutorial.web.controllers.authentication.LoginController;
-import com.lacunasaurus.tutorial.web.controllers.authentication.LogoutController;
-import com.lacunasaurus.tutorial.web.controllers.website.HomeController;
-import com.lacunasaurus.tutorial.web.controllers.authentication.SignUpController;
-import com.lacunasaurus.tutorial.web.controllers.website.WebController;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.TemplateEngine;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-public class ApplicationConfig {
+@EnableWebMvc
+@Configuration
+@ComponentScan(basePackages = "com.lacunasaurus.tutorial.web")
+public class ApplicationConfig implements WebMvcConfigurer, ApplicationContextAware {
 
-    private TemplateEngine templateEngine;
-    private Map<String, WebController> controllersByURL;
+    private ApplicationContext applicationContext;
 
-    public ApplicationConfig(final ServletContext servletContext) {
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
-        super();
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
 
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
+        registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
+    }
 
-        templateResolver.setTemplateMode(TemplateMode.HTML);
+    @Bean
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages");
+        return messageSource;
+    }
+
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(this.applicationContext);
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
-        templateResolver.setCacheTTLMs(3600000L);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCacheable(false);
-
-        this.templateEngine = new TemplateEngine();
-        this.templateEngine.setTemplateResolver(templateResolver);
-
-        this.controllersByURL = new HashMap<>();
-        this.controllersByURL.put("/", new HomeController());
-        this.controllersByURL.put("/sign-up", new SignUpController());
-        this.controllersByURL.put("/login", new LoginController());
-        this.controllersByURL.put("/logout", new LogoutController());
-        this.controllersByURL.put("/admin/user-accounts", new AdminUserAccountController());
+        return templateResolver;
     }
 
-    public WebController resolveControllerForRequest(final HttpServletRequest request) {
-        final String path = getRequestPath(request);
-        return this.controllersByURL.get(path);
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setEnableSpringELCompiler(true);
+        return templateEngine;
     }
 
-    public ITemplateEngine getTemplateEngine() {
-        return this.templateEngine;
-    }
-
-    private static String getRequestPath(final HttpServletRequest request) {
-
-        String requestURI = request.getRequestURI();
-        final String contextPath = request.getContextPath();
-
-        final int fragmentIndex = requestURI.indexOf(';');
-        if (fragmentIndex != -1) {
-            requestURI = requestURI.substring(0, fragmentIndex);
-        }
-
-        if (requestURI.startsWith(contextPath)) {
-            return requestURI.substring(contextPath.length());
-        }
-        return requestURI;
+    @Bean
+    public ThymeleafViewResolver viewResolver() {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+        return viewResolver;
     }
 }

@@ -3,16 +3,16 @@
     <body data-th-fragment="header">
         <ul>
             <li><a href="home.html" data-th-href="@{#{authentication.link.home.link}}" data-th-text="#{authentication.link.home.label}"></a></li>
-            <li data-th-if="${not session.userAccount}">
+            <li data-th-if="${session.userAccount == null}">
                 <a href="sign-up.html" data-th-href="@{#{authentication.link.signup.link}}" data-th-text="#{authentication.link.signup.label}"></a>
             </li>
-            <li data-th-if="${not session.userAccount}">
+            <li data-th-if="${session.userAccount == null}">
                 <a href="login.html" data-th-href="@{#{authentication.link.login.link}}" data-th-text="#{authentication.link.login.label}"></a>
             </li>
-            <li data-th-if="${session.userAccount}">
+            <li data-th-if="${session.userAccount != null}">
                 <a href="logout.html" data-th-href="@{#{authentication.link.logout.link}}" data-th-text="#{authentication.link.logout.label}"></a>
             </li>
-            <li data-th-if="${session.userAccount}">
+            <li data-th-if="${session.userAccount != null}">
                 <a href="admin/user-accounts.html" data-th-href="@{#{admin.link.users.link}}" data-th-text="#{admin.link.users.label}"></a>
             </li>
         </ul>

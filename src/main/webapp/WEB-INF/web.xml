@@ -11,13 +11,4 @@
         </session-timeout>
     </session-config>
 
-    <filter>
-        <filter-name>applicationfilter</filter-name>
-        <filter-class>com.lacunasaurus.tutorial.web.filter.ApplicationFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>applicationfilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 </web-app>

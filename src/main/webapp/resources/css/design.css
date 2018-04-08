@@ -8,3 +8,6 @@ li a {
     text-decoration: none;
     color: #2291a5;
 }
+.warning {
+    color: orange;
+}
